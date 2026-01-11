@@ -79,6 +79,25 @@ vector<Producto> cargarProductos() {
     return productos;
 }
 
+
+
+void agregarProducto() {
+    Producto c;
+
+    cout << "\n--- Agregar Producto ---\n";
+
+    cout << "Nombre: ";
+    getline(cin, c.nombre);
+    cout << "Código: ";
+    cin >> c.codigo;
+    cout << "Cantidad: ";
+    cin >> c.cantidad;
+    cout << "Precio: ";
+    cin >> c.precio;
+    cin.ignore();
+    guardarProducto(c);
+    cout << "Producto guardado correctamente.\n";
+}
 int main() {
     //Configurar consola para tildes y ñ
 
@@ -96,7 +115,7 @@ int main() {
 	    cin.ignore();
 	    //Estructura de las opciones
 	    if (opcion == 1) {  
-	        
+	    	agregarProducto();
 	    }else if (opcion == 2) {
 	    	
 	    }else if (opcion == 3) {
