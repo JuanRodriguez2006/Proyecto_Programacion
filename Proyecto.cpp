@@ -68,8 +68,8 @@ vector<Producto> cargarProductos() {
             produ.push_back(linea);
             if (produ.size() == 4) {
                 Producto p;
-                p.codigo = stoi(produ[0]);
-                p.nombre = produ[1];
+                p.nombre = produ[0];
+                p.codigo=stoi(produ[1]);
                 p.cantidad = stoi(produ[2]);
                 p.precio = stof(produ[3]);
                 productos.push_back(p);
@@ -98,6 +98,33 @@ void agregarProducto() {
     guardarProducto(c);
     cout << "Producto guardado correctamente.\n";
 }
+
+void eliminarProducto() {
+    int codigo;
+    bool encontrado = false;
+
+    vector<Producto> productos = cargarProductos();
+
+    cout << "Ingrese el codigo del producto: ";
+    cin >> codigo;
+    cin.ignore();
+
+    for (int i = 0; i < productos.size(); i++) {
+        if (productos[i].codigo == codigo) {
+            productos.erase(productos.begin() + i);
+            cout << "Producto eliminado correctamente.\n";
+            encontrado = true;
+            break;
+        }
+    }
+
+    if (!encontrado) {
+        cout << "Producto no encontrado.\n";
+    } else {
+        guardarTodo(productos); // sobrescribe el archivo
+    }
+}
+
 int main() {
     //Configurar consola para tildes y ñ
 
@@ -121,7 +148,7 @@ int main() {
 	    }else if (opcion == 3) {
 
 	    }else if (opcion == 4) {
-	    	
+	    	eliminarProducto();
 	    }else if(opcion == 5){
 			cout<<"Saliendo del sistema...\n";
 		}else {
