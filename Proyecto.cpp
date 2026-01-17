@@ -124,6 +124,35 @@ void eliminarProducto() {
         guardarTodo(productos); // sobrescribe el archivo
     }
 }
+void actualizarProducto() {
+    int codigo;
+    vector<Producto> productos = cargarProductos();
+
+    cout << "Codigo del producto a actualizar: ";
+    cin >> codigo;
+    cin.ignore();
+
+    for (int i = 0; i < productos.size(); i++) {
+        if (productos[i].codigo == codigo) {
+
+            cout << "Nuevo nombre: ";
+            getline(cin, productos[i].nombre);
+
+            cout << "Nueva cantidad: ";
+            cin >> productos[i].cantidad;
+
+            cout << "Nuevo precio: ";
+            cin >> productos[i].precio;
+            cin.ignore();
+
+            guardarTodo(productos);
+            cout << "Producto actualizado.\n";
+            return;
+        }
+    }
+
+    cout << "Producto no encontrado.\n";
+}
 
 int main() {
     //Configurar consola para tildes y ñ
@@ -146,7 +175,7 @@ int main() {
 	    }else if (opcion == 2) {
 	    	
 	    }else if (opcion == 3) {
-
+			actualizarProducto();
 	    }else if (opcion == 4) {
 	    	eliminarProducto();
 	    }else if(opcion == 5){
