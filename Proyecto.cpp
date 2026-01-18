@@ -153,6 +153,21 @@ void actualizarProducto() {
 
     cout << "Producto no encontrado.\n";
 }
+void mostrarProducto(){
+    vector<Producto>productos=cargarProductos();
+    cout<<"\n---Lista de Productos---\n";
+    if (productos.empty()){
+        cout<<"No hay productos agregados.\n";
+    }else {
+        for (auto& producto : productos) {
+            cout<<"--------------------\n";
+            cout<<"Codigo: "<<producto.codigo<<"\n";
+            cout<<"Nombre: "<<producto.nombre<<"\n";
+            cout<<"Cantidad: "<<producto.cantidad<<"\n";
+            cout<<"Precio: $"<<producto.precio<<"\n";
+        }
+    }
+}
 
 int main() {
     //Configurar consola para tildes y ñ
@@ -173,7 +188,7 @@ int main() {
 	    if (opcion == 1) {  
 	    	agregarProducto();
 	    }else if (opcion == 2) {
-	    	
+	    	mostrarProducto();
 	    }else if (opcion == 3) {
 			actualizarProducto();
 	    }else if (opcion == 4) {
