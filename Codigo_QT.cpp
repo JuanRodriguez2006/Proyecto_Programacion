@@ -176,3 +176,49 @@ void MainWindow::on_btnActualizar_clicked() {
         QMessageBox::warning(this, "Error", "Producto no encontrado");
     }
 }
+
+void MainWindow::on_btnEliminar_clicked() {
+    if (ui->lineEdit_codigo->text().isEmpty()) {
+        QMessageBox::warning(this, "Error", "Debe ingresar un código para eliminar");
+        return;
+    }
+
+    cargarProductos();
+    std::string codigo = ui->lineEdit_codigo->text().toStdString();
+    bool encontrado = false;
+
+    for (size_t i = 0; i < productos.size(); i++) {
+        if (productos[i].codigo == codigo) {
+            productos.erase(productos.begin() + i);
+            encontrado = true;
+            break;
+        }
+    }
+
+    if (encontrado) {
+        guardarTodo();
+        actualizarTabla();
+        limpiarCampos();
+        QMessageBox::information(this, "Éxito", "Producto eliminado correctamente");
+    } else {
+        QMessageBox::warning(this, "Error", "Producto no encontrado");
+    }
+}
+
+void MainWindow::on_btnMostrar_clicked() {
+    cargarProductos();
+    actualizarTabla();
+    if (productos.empty()) {
+        QMessageBox::information(this, "Información", "No hay productos registrados");
+    }
+}
+
+void MainWindow::on_btnSalir_clicked() {
+    QMessageBox::StandardButton respuesta;
+    respuesta = QMessageBox::question(this, "Salir",
+                                      "¿Está seguro de que desea salir?",
+                                      QMessageBox::Yes | QMessageBox::No);
+    if (respuesta == QMessageBox::Yes) {
+        QApplication::quit();
+    }
+}
