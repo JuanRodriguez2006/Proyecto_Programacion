@@ -91,3 +91,88 @@ void MainWindow::limpiarCampos() {
     ui->lineEdit_cantidad->clear();
     ui->lineEdit_precio->clear();
 }
+
+void MainWindow::on_btnAgregar_clicked() {
+    if (ui->lineEdit_codigo->text().isEmpty() || ui->lineEdit_nombre->text().isEmpty()) {
+        QMessageBox::warning(this, "Error", "Debe completar Código o Nombre");
+        return;
+    }
+
+    int cant = ui->lineEdit_cantidad->text().toInt();
+    float prec = ui->lineEdit_precio->text().toFloat();
+
+    if (cant < 0 || prec < 0 ) {
+        QMessageBox::warning(this, "Error", "La cantidad o el precio no pueden ser negativos");
+        return;
+    }
+
+    cargarProductos();
+
+    Producto p;
+    p.codigo = ui->lineEdit_codigo->text().toStdString();
+    p.nombre = ui->lineEdit_nombre->text().toStdString();
+    p.cantidad = cant;
+    p.precio = prec;
+
+    for (auto& prod : productos) {
+        if (prod.codigo == p.codigo) {
+            QMessageBox::warning(this, "Error", "El código ya existe");
+            return;
+        }
+    }
+
+    guardarProducto(p);
+    cargarProductos();
+    actualizarTabla();
+    limpiarCampos();
+
+    QMessageBox::information(this, "Éxito", "Producto agregado correctamente");
+}
+
+void MainWindow::on_btnActualizar_clicked() {
+    if (ui->lineEdit_codigo->text().isEmpty()) {
+        QMessageBox::warning(this, "Error", "Debe ingresar un código para actualizar");
+        return;
+    }
+
+    cargarProductos();
+    std::string codigo = ui->lineEdit_codigo->text().toStdString();
+    bool encontrado = false;
+
+    for (auto& p : productos) {
+        if (p.codigo == codigo) {
+            if (!ui->lineEdit_nombre->text().isEmpty())
+                p.nombre = ui->lineEdit_nombre->text().toStdString();
+
+            if (!ui->lineEdit_cantidad->text().isEmpty()) {
+                int nCant = ui->lineEdit_cantidad->text().toInt();
+                if (nCant < 0) {
+                    QMessageBox::warning(this, "Error", "Cantidad negativa no permitida");
+                    return;
+                }
+                p.cantidad = nCant;
+            }
+
+            if (!ui->lineEdit_precio->text().isEmpty()) {
+                float nPrec = ui->lineEdit_precio->text().toFloat();
+                if (nPrec < 0) {
+                    QMessageBox::warning(this, "Error", "Precio negativo no permitido");
+                    return;
+                }
+                p.precio = nPrec;
+            }
+
+            encontrado = true;
+            break;
+        }
+    }
+
+    if (encontrado) {
+        guardarTodo();
+        actualizarTabla();
+        limpiarCampos();
+        QMessageBox::information(this, "Éxito", "Producto actualizado correctamente");
+    } else {
+        QMessageBox::warning(this, "Error", "Producto no encontrado");
+    }
+}
